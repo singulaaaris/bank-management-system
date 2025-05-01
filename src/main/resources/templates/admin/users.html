@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Panel: Users</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e3c72;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 120px; /* минимальная ширина колонок */
+        }
+        th {
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 16px;
+        }
+        td {
+            font-size: 15px;
+        }
+        button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #4CAF50;
+        }
+        .logout-button {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Admin Panel: Users</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Balance (₸)</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td th:text="${user.username}">user</td>
+        <td th:text="${user.role}">ROLE_USER</td>
+        <td th:text="${user.customer.email}">user@example.com</td>
+        <td th:text="${userBalances[user.id]}">0.0</td>
+        <td th:text="${user.enabled ? 'Active' : 'Blocked'}">Status</td>
+        <td>
+            <form th:action="@{'/admin/block-user/' + ${user.id}}" method="post" style="display:inline;">
+                <button type="submit" th:if="${user.enabled}">Block</button>
+            </form>
+            <form th:action="@{'/admin/unblock-user/' + ${user.id}}" method="post" style="display:inline;">
+                <button type="submit" th:if="${!user.enabled}">Unblock</button>
+            </form>
+            <form th:action="@{'/admin/delete-user/' + ${user.id}}" method="post" style="display:inline;">
+                <button type="submit" style="background-color: red;">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="logout-button">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Exit</button>
+    </form>
+</div>
+
+</body>
+</html>
