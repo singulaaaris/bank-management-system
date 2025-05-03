@@ -49,22 +49,43 @@ public class BankController {
         return "customers";
     }
 
+    @PostMapping("/deposit-by-number")
+    public String depositByNumber(@RequestParam String accountNumber, @RequestParam double amount) {
+        bankService.depositByAccountNumber(accountNumber, amount);
+        return "redirect:/customers";
+    }
+
+    @PostMapping("/withdraw-by-number")
+    public String withdrawByNumber(@RequestParam String accountNumber, @RequestParam double amount) {
+        bankService.withdrawByAccountNumber(accountNumber, amount);
+        return "redirect:/customers";
+    }
+
     @PostMapping("/create-customer")
     public String createCustomer(@ModelAttribute Customer customer) {
         bankService.createCustomer(customer);
         return "redirect:/customers";
     }
     @PostMapping("/deposit")
-    public String deposit(@RequestParam Long accountId, @RequestParam double amount) {
-        bankService.deposit(accountId, amount);
+    public String deposit(@RequestParam String accountNumber, @RequestParam double amount) {
+        bankService.depositByAccountNumber(accountNumber, amount);
         return "redirect:/customers";
     }
 
     @PostMapping("/withdraw")
-    public String withdraw(@RequestParam Long accountId, @RequestParam double amount) {
-        bankService.withdraw(accountId, amount);
+    public String withdraw(@RequestParam String accountNumber, @RequestParam double amount) {
+        bankService.withdrawByAccountNumber(accountNumber, amount);
         return "redirect:/customers";
     }
+
+    @PostMapping("/transfer")
+    public String transfer(@RequestParam String fromAccountNumber,
+                           @RequestParam String toAccountNumber,
+                           @RequestParam double amount) {
+        bankService.transfer(fromAccountNumber, toAccountNumber, amount);
+        return "redirect:/customers";
+    }
+
 
     @GetMapping("/register")
     public String registerPage() {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -16,9 +17,12 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping("/transactions")
-    public String listTransactions(Model model) {
-        List<Transaction> transactions = transactionService.getAllTransactions();
+    public String listUserTransactions(Model model, Principal principal) {
+        String username = principal.getName(); // получить имя авторизованного пользователя
+        List<Transaction> transactions = transactionService.getTransactionsByUsername(username);
         model.addAttribute("transactions", transactions);
         return "transactions";
     }
+
+
 }

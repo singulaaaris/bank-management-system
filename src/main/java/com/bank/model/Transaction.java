@@ -20,7 +20,11 @@ public class Transaction {
     private Account account;
 
     public Transaction() {
-        this.timestamp = new Date();
+        this.timestamp = new Date(); // по умолчанию текущая дата
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTransactionType() { return transactionType; }
@@ -30,12 +34,8 @@ public class Transaction {
     public void setAmount(double amount) { this.amount = amount; }
 
     public Date getTimestamp() { return timestamp; }
+    public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
+    public Account getAccount() { return account; }
+    public void setAccount(Account account) { this.account = account; }
 }

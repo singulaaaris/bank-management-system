@@ -4,18 +4,28 @@
     <title>Bank Customers</title>
 </head>
 <body>
-<h2>Customer List</h2>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-    </tr>
-    <tr th:each="customer : ${customers}">
-        <td th:text="${customer.id}"></td>
-        <td th:text="${customer.name}"></td>
-        <td th:text="${customer.email}"></td>
-    </tr>
-</table>
+<h3>Transactions by account number</h3>
+
+<form method="post" action="/deposit">
+    <input type="text" name="accountNumber" placeholder="Account number">
+    <input type="number" name="amount" step="0.01" placeholder="Amount">
+    <button type="submit">Deposit</button>
+</form>
+
+<form action="/withdraw-by-number" method="post">
+    <input type="text" name="accountNumber" placeholder="Account number" required>
+    <input type="number" name="amount" step="0.01" placeholder="Amount" required>
+    <button type="submit">Withdraw</button>
+</form>
+<h3>Transfer between accounts</h3>
+
+<form action="/transfer" method="post">
+    <input type="text" name="fromAccountNumber" placeholder="Sender (account number)" required>
+    <input type="text" name="toAccountNumber" placeholder="Recipient (account number)" required>
+    <input type="number" name="amount" step="0.01" placeholder="Amount" required>
+    <button type="submit">Transfer</button>
+</form>
+
+
 </body>
 </html>

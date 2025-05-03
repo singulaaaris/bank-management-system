@@ -110,14 +110,12 @@
     <div class="table-container">
         <table>
             <tr>
-                <th>ID</th>
                 <th>Type</th>
                 <th>Amount</th>
                 <th>Date</th>
 
             </tr>
             <tr th:each="transaction : ${transactions}">
-                <td th:text="${transaction.id}"></td>
                 <td th:text="${transaction.transactionType}"></td>
                 <td th:text="${transaction.amount}"></td>
                 <td th:text="${transaction.timestamp}"></td>

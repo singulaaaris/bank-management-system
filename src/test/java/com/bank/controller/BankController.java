@@ -54,17 +54,6 @@ public class BankController {
         bankService.createCustomer(customer);
         return "redirect:/customers";
     }
-    @PostMapping("/deposit")
-    public String deposit(@RequestParam Long accountId, @RequestParam double amount) {
-        bankService.deposit(accountId, amount);
-        return "redirect:/customers";
-    }
-
-    @PostMapping("/withdraw")
-    public String withdraw(@RequestParam Long accountId, @RequestParam double amount) {
-        bankService.withdraw(accountId, amount);
-        return "redirect:/customers";
-    }
 
     @GetMapping("/register")
     public String registerPage() {
