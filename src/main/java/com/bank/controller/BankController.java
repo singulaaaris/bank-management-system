@@ -2,7 +2,6 @@ package com.bank.controller;
 
 import com.bank.model.Account;
 import com.bank.model.User;
-import com.bank.model.Customer;
 import com.bank.service.AccountService;
 import com.bank.service.BankService;
 import com.bank.service.UserService;
@@ -31,7 +30,6 @@ public class BankController {
         String username = principal.getName();
         User user = userService.findUserByUsername(username);
 
-
         if ("ROLE_ADMIN".equals(user.getRole())) {
             return "redirect:/admin/users";
         }
@@ -43,39 +41,31 @@ public class BankController {
     }
 
 
-    @GetMapping("/customers")
-    public String listCustomers(Model model) {
-        model.addAttribute("customers", bankService.getAllCustomers());
-        return "customers";
+    @GetMapping("/deposit")
+    public String depositPage() {
+        return "operations/deposit";
     }
 
-    @PostMapping("/deposit-by-number")
-    public String depositByNumber(@RequestParam String accountNumber, @RequestParam double amount) {
-        bankService.depositByAccountNumber(accountNumber, amount);
-        return "redirect:/customers";
+    @GetMapping("/withdraw")
+    public String withdrawPage() {
+        return "operations/withdraw";
     }
 
-    @PostMapping("/withdraw-by-number")
-    public String withdrawByNumber(@RequestParam String accountNumber, @RequestParam double amount) {
-        bankService.withdrawByAccountNumber(accountNumber, amount);
-        return "redirect:/customers";
+    @GetMapping("/transfer")
+    public String transferPage() {
+        return "operations/transfer";
     }
 
-    @PostMapping("/create-customer")
-    public String createCustomer(@ModelAttribute Customer customer) {
-        bankService.createCustomer(customer);
-        return "redirect:/customers";
-    }
     @PostMapping("/deposit")
     public String deposit(@RequestParam String accountNumber, @RequestParam double amount) {
         bankService.depositByAccountNumber(accountNumber, amount);
-        return "redirect:/customers";
+        return "redirect:/home";
     }
 
     @PostMapping("/withdraw")
     public String withdraw(@RequestParam String accountNumber, @RequestParam double amount) {
         bankService.withdrawByAccountNumber(accountNumber, amount);
-        return "redirect:/customers";
+        return "redirect:/home";
     }
 
     @PostMapping("/transfer")
@@ -83,7 +73,7 @@ public class BankController {
                            @RequestParam String toAccountNumber,
                            @RequestParam double amount) {
         bankService.transfer(fromAccountNumber, toAccountNumber, amount);
-        return "redirect:/customers";
+        return "redirect:/home";
     }
 
 
