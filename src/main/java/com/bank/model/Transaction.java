@@ -9,8 +9,18 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String transactionType; // Deposit, Withdrawal, Transfer
+    private String transactionType;
     private double amount;
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
@@ -20,12 +30,13 @@ public class Transaction {
     private Account account;
 
     public Transaction() {
-        this.timestamp = new Date(); // по умолчанию текущая дата
+        this.timestamp = new Date();
     }
 
     public Long getId() {
         return id;
     }
+
 
     public String getTransactionType() { return transactionType; }
     public void setTransactionType(String transactionType) { this.transactionType = transactionType; }

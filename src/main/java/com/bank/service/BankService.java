@@ -35,11 +35,14 @@ public class BankService {
 
     @Transactional
     public void depositByAccountNumber(String accountNumber, double amount) {
+        if (amount < 100) {
+            throw new IllegalArgumentException("Minimum deposit amount is 100 KZT.");
+        }
         validateAmount(amount);
         Account account = getAccountByNumber(accountNumber);
         account.setBalance(account.getBalance() + amount);
         accountRepo.save(account);
-        logTransaction(account, amount, "Deposit");
+        logTransaction(account, amount, "Deposit", null);
     }
 
     @Transactional
@@ -51,11 +54,11 @@ public class BankService {
         }
         account.setBalance(account.getBalance() - amount);
         accountRepo.save(account);
-        logTransaction(account, amount, "Withdrawal");
+        logTransaction(account, amount, "Withdrawal", null);
     }
 
     @Transactional
-    public void transfer(String fromAccountNumber, String toAccountNumber, double amount) {
+    public void transfer(String fromAccountNumber, String toAccountNumber, double amount, String comment) {
         validateAmount(amount);
 
         if (fromAccountNumber.equals(toAccountNumber)) {
@@ -75,8 +78,8 @@ public class BankService {
         accountRepo.save(from);
         accountRepo.save(to);
 
-        logTransaction(from, amount, "Transfer Out");
-        logTransaction(to, amount, "Transfer In");
+        logTransaction(from, amount, "Transfer Out", comment);
+        logTransaction(to, amount, "Transfer In", comment);
     }
 
     private Account getAccountByNumber(String accountNumber) {
@@ -84,23 +87,26 @@ public class BankService {
                 .orElseThrow(() -> new RuntimeException("Account not found with number: " + accountNumber));
     }
 
-    private void logTransaction(Account account, double amount, String type) {
+    private void logTransaction(Account account, double amount, String type, String comment) {
         Transaction tx = new Transaction();
         tx.setTransactionType(type);
         tx.setAmount(amount);
         tx.setTimestamp(new Date());
         tx.setAccount(account);
+        tx.setComment(comment);
         transactionRepository.save(tx);
     }
 
     private void validateAmount(double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than zero");
+        if (amount < 100) {
+            throw new IllegalArgumentException("Minimum amount is 100 KZT");
         }
     }
 
+
     public List<Transaction> getTransactionsByAccountNumber(String accountNumber) {
         Account account = getAccountByNumber(accountNumber);
-        return transactionRepository.findByAccountId(account.getId());
+        return transactionRepository.findByAccountIdOrderByTimestampDesc(account.getId());
+
     }
 }

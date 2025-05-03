@@ -9,15 +9,16 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String accountType;
     private double balance;
     private String accountNumber;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+    @Column(name = "account_type")
+    private String accountType;
 
-    // --- Геттеры и Сеттеры ---
+
 
     public Long getId() {
         return id;

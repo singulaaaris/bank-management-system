@@ -92,6 +92,8 @@
             <a href="/home" class="back-button">Back</a>
         </div>
     </form>
+    <div th:if="${error}" th:text="${error}" style="color: #ff8080; font-weight: bold;"></div>
+
 </div>
 
 </body>

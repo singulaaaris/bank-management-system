@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -40,7 +41,6 @@ public class BankController {
         return "home";
     }
 
-
     @GetMapping("/deposit")
     public String depositPage() {
         return "operations/deposit";
@@ -57,25 +57,45 @@ public class BankController {
     }
 
     @PostMapping("/deposit")
-    public String deposit(@RequestParam String accountNumber, @RequestParam double amount) {
-        bankService.depositByAccountNumber(accountNumber, amount);
-        return "redirect:/home";
+    public String deposit(@RequestParam String accountNumber,
+                          @RequestParam double amount,
+                          RedirectAttributes redirectAttributes) {
+        try {
+            bankService.depositByAccountNumber(accountNumber, amount);
+            redirectAttributes.addFlashAttribute("success", "Deposit successful!");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/deposit";
     }
 
     @PostMapping("/withdraw")
-    public String withdraw(@RequestParam String accountNumber, @RequestParam double amount) {
-        bankService.withdrawByAccountNumber(accountNumber, amount);
-        return "redirect:/home";
+    public String withdraw(@RequestParam String accountNumber,
+                           @RequestParam double amount,
+                           RedirectAttributes redirectAttributes) {
+        try {
+            bankService.withdrawByAccountNumber(accountNumber, amount);
+            redirectAttributes.addFlashAttribute("success", "Withdrawal successful!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/withdraw";
     }
 
     @PostMapping("/transfer")
     public String transfer(@RequestParam String fromAccountNumber,
                            @RequestParam String toAccountNumber,
-                           @RequestParam double amount) {
-        bankService.transfer(fromAccountNumber, toAccountNumber, amount);
-        return "redirect:/home";
+                           @RequestParam double amount,
+                           @RequestParam(required = false) String comment,
+                           RedirectAttributes redirectAttributes) {
+        try {
+            bankService.transfer(fromAccountNumber, toAccountNumber, amount, comment);
+            redirectAttributes.addFlashAttribute("success", "Transfer completed!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/transfer";
     }
-
 
     @GetMapping("/register")
     public String registerPage() {

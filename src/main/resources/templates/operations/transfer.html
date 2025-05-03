@@ -39,7 +39,7 @@
             flex-direction: column;
         }
 
-        input {
+        input, textarea {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             border-radius: 30px;
@@ -49,7 +49,12 @@
             color: #fff;
         }
 
-        input::placeholder {
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input::placeholder, textarea::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
 
@@ -88,11 +93,14 @@
         <input type="text" name="fromAccountNumber" placeholder="From Account Number" required>
         <input type="text" name="toAccountNumber" placeholder="To Account Number" required>
         <input type="number" name="amount" step="0.01" placeholder="Amount" required>
+        <textarea name="comment" placeholder="Comment (optional)"></textarea>
         <div class="button-group">
             <button type="submit">Transfer</button>
             <a href="/home" class="back-button">Back</a>
         </div>
     </form>
+    <div th:if="${error}" th:text="${error}" style="color: #ff8080; font-weight: bold;"></div>
+
 </div>
 
 </body>

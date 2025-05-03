@@ -68,6 +68,7 @@
 <table>
     <thead>
     <tr>
+        <th>Type</th>
         <th>Account number</th>
         <th>Balance (₸)</th>
     </tr>
@@ -75,6 +76,7 @@
     <tbody>
     <tr th:each="account : ${accounts}">
         <td th:text="${account.accountNumber}">440012345678</td>
+        <td th:text="${account.accountType}">Main</td>
         <td th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">10000.00</td>
     </tr>
     </tbody>
