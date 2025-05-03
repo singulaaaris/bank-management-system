@@ -38,8 +38,10 @@ public class BankController {
         List<Account> accounts = accountService.findAccountsByUsername(username);
         model.addAttribute("accounts", accounts);
         model.addAttribute("username", username);
+        model.addAttribute("email", user.getUsername() + "@bank.com");
         return "home";
     }
+
 
     @GetMapping("/deposit")
     public String depositPage() {
