@@ -17,7 +17,7 @@ A secure, role-based banking backend built with Spring Boot and MySQL. Supports 
 - ~~**Transaction Comment Field** – save and display comments on transactions.~~
 - **Monthly Spending Limit** – notify user when spending exceeds set limit.
 - **Client Name Search Filter** – search clients by name.
-- **User Account Blocking** – admin disables user login via flag.
+-  ~~**User Account Blocking** – admin disables user login via flag. ~~
 - **Operation Confirmation Popups** – show confirmation dialog before deposit/withdrawal.
 
 ---
