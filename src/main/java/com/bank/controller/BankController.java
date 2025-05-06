@@ -26,6 +26,11 @@ public class BankController {
     @Autowired
     private AccountService accountService;
 
+    @GetMapping("/error-page")
+    public String showErrorPage() {
+        return "error-page";
+    }
+
     @GetMapping("/home")
     public String homePage(Model model, Principal principal) {
         String username = principal.getName();

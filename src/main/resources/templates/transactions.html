@@ -86,6 +86,20 @@
 <body>
 <div class="transactions-container">
     <h2>Transaction History</h2>
+
+    <!-- Форма фильтрации по дате -->
+    <form method="get" action="/transactions/filter" style="margin-bottom: 20px;">
+        <label>
+            Start Date:
+            <input type="date" name="startDate" required>
+        </label>
+        <label style="margin-left: 10px;">
+            End Date:
+            <input type="date" name="endDate" required>
+        </label>
+        <button type="submit" style="margin-left: 10px;">Filter</button>
+    </form>
+
     <div class="table-wrapper">
         <table>
             <thead>
@@ -102,9 +116,9 @@
             <tr th:each="transaction : ${transactions}">
                 <td th:text="${transaction.id}">1</td>
                 <td th:text="${transaction.transactionType}">Deposit</td>
-                <td th:text="${transaction.account.accountNumber}"></td>
+                <td th:text="${transaction.account.accountNumber}">123456</td>
                 <td th:text="${transaction.amount}">1000</td>
-                <td th:text="${transaction.timestamp}">2025-05-02</td>
+                <td th:text="${#dates.format(transaction.timestamp, 'yyyy-MM-dd')}">2025-05-02</td>
                 <td th:text="${transaction.comment}">Transfer to savings</td>
             </tr>
             </tbody>

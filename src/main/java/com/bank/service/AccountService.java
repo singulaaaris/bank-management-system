@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -75,5 +76,16 @@ public class AccountService {
         }
 
         return sb.toString();
+    }
+
+    // Метод для получения аккаунта по ID
+    public Account getAccountById(Long id) {
+        // Проверяем, существует ли аккаунт с таким ID
+        Optional<Account> account = accountRepository.findById(id);
+        if (account.isPresent()) {
+            return account.get(); // Если аккаунт найден, возвращаем его
+        } else {
+            throw new RuntimeException("Account not found"); // Если аккаунт не найден, выбрасываем исключение
+        }
     }
 }

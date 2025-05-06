@@ -1,5 +1,6 @@
 package com.bank.service;
 
+
 import com.bank.model.Account;
 import com.bank.model.Transaction;
 import com.bank.model.User;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 @Service
 public class TransactionService {
@@ -26,6 +28,11 @@ public class TransactionService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    public List<Transaction> getTransactionsByDateRange(Date startDate, Date endDate) {
+        return transactionRepository.findByTimestampBetween(startDate, endDate);
+    }
+
 
 
     public List<Transaction> getTransactionsByUsername(String username) {
