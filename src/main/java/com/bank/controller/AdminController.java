@@ -40,7 +40,7 @@ public class AdminController {
 
         model.addAttribute("users", users);
         model.addAttribute("userBalances", userBalances);
-        model.addAttribute("keyword", keyword); // для отображения в форме поиска
+        model.addAttribute("keyword", keyword);
 
         return "admin/users";
     }

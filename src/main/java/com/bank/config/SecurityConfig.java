@@ -24,15 +24,13 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/error",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()
-                        .requestMatchers("/customers", "/accounts", "/transactions").hasAnyRole("ADMIN", "MANAGER")
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "MANAGER")
+
                         .requestMatchers("/deposit", "/withdraw", "/transfer").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/customers", "/accounts").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/transactions", "/transactions/pdf").hasAnyRole("USER", "ADMIN", "MANAGER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login

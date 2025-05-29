@@ -86,10 +86,9 @@
     </style>
 </head>
 <body>
-
 <div class="form-container">
     <h2>Transfer Funds</h2>
-    <form method="post" action="/transfer">
+    <form method="post" action="/transfer" onsubmit="return confirmTransfer()">
         <input type="text" name="fromAccountNumber" placeholder="From Account Number" required>
         <input type="text" name="toAccountNumber" placeholder="To Account Number" required>
         <input type="number" name="amount" step="0.01" placeholder="Amount" required>
@@ -99,9 +98,11 @@
             <a href="/home" class="back-button">Back</a>
         </div>
     </form>
-    <div th:if="${error}" th:text="${error}" style="color: #ff8080; font-weight: bold;"></div>
-
 </div>
-
+<script>
+    function confirmTransfer() {
+        return confirm("Are you sure you want to transfer this amount?");
+    }
+</script>
 </body>
 </html>

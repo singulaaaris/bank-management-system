@@ -60,23 +60,33 @@ public class BankController {
     public String deposit(@RequestParam String accountNumber,
                           @RequestParam double amount) {
         bankService.depositByAccountNumber(accountNumber, amount);
-        return "redirect:/accounts";
+        return "redirect:/home";
     }
 
     @PostMapping("/withdraw")
     public String withdraw(@RequestParam String accountNumber,
-                           @RequestParam double amount) {
-        bankService.withdrawByAccountNumber(accountNumber, amount);
-        return "redirect:/accounts";
+                           @RequestParam double amount,
+                           Model model) {
+        boolean success = bankService.withdrawWithLimit(accountNumber, amount);
+        if (!success) {
+            model.addAttribute("errorMessage", "Monthly spending limit exceeded!");
+            return "error";
+        }
+        return "redirect:/home";
     }
 
     @PostMapping("/transfer")
     public String transfer(@RequestParam String fromAccountNumber,
                            @RequestParam String toAccountNumber,
                            @RequestParam double amount,
-                           @RequestParam(required = false) String comment) {
-        bankService.transfer(fromAccountNumber, toAccountNumber, amount, comment);
-        return "redirect:/accounts";
+                           @RequestParam(required = false) String comment,
+                           Model model) {
+        boolean success = bankService.transferWithLimit(fromAccountNumber, toAccountNumber, amount, comment);
+        if (!success) {
+            model.addAttribute("errorMessage", "Monthly spending limit exceeded!");
+            return "error";
+        }
+        return "redirect:/home";
     }
 
     @GetMapping("/register")

@@ -10,6 +10,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({RuntimeException.class, IllegalArgumentException.class})
     public String handleAppExceptions(Exception ex, Model model) {
         model.addAttribute("errorMessage", ex.getMessage());
-        return "operations/error"; // путь к твоей HTML-странице
+        return "operations/error";
     }
 }

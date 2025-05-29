@@ -81,10 +81,9 @@
     </style>
 </head>
 <body>
-
 <div class="form-container">
     <h2>Withdraw Funds</h2>
-    <form method="post" action="/withdraw">
+    <form method="post" action="/withdraw" onsubmit="return confirmWithdraw()">
         <input type="text" name="accountNumber" placeholder="Account Number" required>
         <input type="number" name="amount" step="0.01" placeholder="Amount" required>
         <div class="button-group">
@@ -92,8 +91,11 @@
             <a href="/home" class="back-button">Back</a>
         </div>
     </form>
-    <div th:if="${error}" th:text="${error}" style="color: #ff8080; font-weight: bold;"></div>
 </div>
-
+<script>
+    function confirmWithdraw() {
+        return confirm("Are you sure you want to withdraw this amount?");
+    }
+</script>
 </body>
 </html>

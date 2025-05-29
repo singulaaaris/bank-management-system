@@ -26,19 +26,15 @@ public class AccountController {
         model.addAttribute("email", username + "@bank.com");
         return "accounts";
     }
-
-    // Обработчик запроса на отображение информации об аккаунте
     @GetMapping("/account/{id}")
     public String getAccount(@PathVariable Long id, Model model) {
         try {
-            // Попытка получить аккаунт по ID
             Account account = accountService.getAccountById(id);
             model.addAttribute("account", account);
-            return "account"; // Возвращаем страницу с деталями аккаунта
+            return "account";
         } catch (Exception e) {
-            // Если произошла ошибка (например, аккаунт не найден), добавляем ошибку в модель
             model.addAttribute("error", "Account with this ID not found.");
-            return "error-page"; // Переходим на страницу с ошибкой
+            return "error-page";
         }
     }
 }

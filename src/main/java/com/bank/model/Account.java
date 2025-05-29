@@ -18,8 +18,6 @@ public class Account {
     @Column(name = "account_type")
     private String accountType;
 
-
-
     public Long getId() {
         return id;
     }

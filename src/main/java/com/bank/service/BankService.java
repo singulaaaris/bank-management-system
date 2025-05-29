@@ -16,6 +16,8 @@ import java.util.List;
 @Service
 public class BankService {
 
+    private static final double MONTHLY_LIMIT = 150000;
+
     @Autowired
     private CustomerRepository customerRepo;
 
@@ -35,22 +37,23 @@ public class BankService {
 
     @Transactional
     public void depositByAccountNumber(String accountNumber, double amount) {
-        if (amount < 100) {
-            throw new IllegalArgumentException("Minimum deposit amount is 100 KZT.");
-        }
-
         validateAmount(amount);
         Account account = getAccountByNumber(accountNumber);
         account.setBalance(account.getBalance() + amount);
         accountRepo.save(account);
-
         logTransaction(account, amount, "Deposit", null);
     }
 
     @Transactional
-    public void withdrawByAccountNumber(String accountNumber, double amount) {
+    public boolean withdrawWithLimit(String accountNumber, double amount) {
         validateAmount(amount);
         Account account = getAccountByNumber(accountNumber);
+        Customer customer = account.getCustomer();
+
+        double spent = transactionRepository.sumSpentThisMonthByCustomerId(customer.getId());
+        if (spent + amount > MONTHLY_LIMIT) {
+            return false;
+        }
 
         if (account.getBalance() < amount) {
             throw new RuntimeException("Insufficient funds!");
@@ -58,12 +61,12 @@ public class BankService {
 
         account.setBalance(account.getBalance() - amount);
         accountRepo.save(account);
-
         logTransaction(account, amount, "Withdrawal", null);
+        return true;
     }
 
     @Transactional
-    public void transfer(String fromAccountNumber, String toAccountNumber, double amount, String comment) {
+    public boolean transferWithLimit(String fromAccountNumber, String toAccountNumber, double amount, String comment) {
         validateAmount(amount);
 
         if (fromAccountNumber.equals(toAccountNumber)) {
@@ -72,19 +75,24 @@ public class BankService {
 
         Account from = getAccountByNumber(fromAccountNumber);
         Account to = getAccountByNumber(toAccountNumber);
+        Customer customer = from.getCustomer();
+
+        double spent = transactionRepository.sumSpentThisMonthByCustomerId(customer.getId());
+        if (spent + amount > MONTHLY_LIMIT) {
+            return false;
+        }
 
         if (from.getBalance() < amount) {
-            throw new RuntimeException("Insufficient funds for transfer!");
+            throw new RuntimeException("Insufficient funds!");
         }
 
         from.setBalance(from.getBalance() - amount);
         to.setBalance(to.getBalance() + amount);
-
         accountRepo.save(from);
         accountRepo.save(to);
-
         logTransaction(from, amount, "Transfer Out", comment);
         logTransaction(to, amount, "Transfer In", comment);
+        return true;
     }
 
     private Account getAccountByNumber(String accountNumber) {
