@@ -105,6 +105,10 @@ public class UserService {
         accountRepository.deleteAllByCustomerId(user.getCustomer().getId());
         userRepository.deleteById(id);
     }
+    public List<User> findByUsernameContaining(String keyword) {
+        return userRepository.findByUsernameContainingIgnoreCase(keyword);
+    }
+
 
     public void updatePassword(User user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));

@@ -23,8 +23,14 @@ public class AdminController {
     private AccountService accountService;
 
     @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<User> users = userService.getAllUsers();
+    public String listUsers(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
+        List<User> users;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            users = userService.findByUsernameContaining(keyword);
+        } else {
+            users = userService.getAllUsers();
+        }
 
         Map<Long, Double> userBalances = new HashMap<>();
         for (User user : users) {
@@ -34,6 +40,7 @@ public class AdminController {
 
         model.addAttribute("users", users);
         model.addAttribute("userBalances", userBalances);
+        model.addAttribute("keyword", keyword); // для отображения в форме поиска
 
         return "admin/users";
     }
@@ -43,7 +50,6 @@ public class AdminController {
         userService.blockUserById(id);
         return "redirect:/admin/users";
     }
-
 
     @PostMapping("/unblock-user/{id}")
     public String unblockUser(@PathVariable Long id) {
@@ -56,6 +62,4 @@ public class AdminController {
         userService.deleteUserById(id);
         return "redirect:/admin/users";
     }
-
-
 }

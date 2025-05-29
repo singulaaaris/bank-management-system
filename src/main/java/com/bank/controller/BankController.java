@@ -30,7 +30,7 @@ public class BankController {
         String username = principal.getName();
         User user = userService.findUserByUsername(username);
 
-        if ("ROLE_ADMIN".equals(user.getRole())) {
+        if ("ROLE_ADMIN".equals(user.getRole()) || "ROLE_MANAGER".equals(user.getRole())) {
             return "redirect:/admin/users";
         }
 

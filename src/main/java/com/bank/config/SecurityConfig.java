@@ -17,9 +17,22 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/login/forgot-password", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(
+                                "/register",
+                                "/login",
+                                "/login/forgot-password",
+                                "/css/**",
+                                "/js/**",
+                                "/error",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
+                        .requestMatchers("/customers", "/accounts", "/transactions").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/deposit", "/withdraw", "/transfer").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login

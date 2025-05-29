@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Admin Panel: Users</title>
     <style>
@@ -51,6 +51,12 @@
 <body>
 
 <h1>Admin Panel: Users</h1>
+<form method="get" action="/admin/users" style="margin-bottom: 20px;">
+    <input type="text" name="keyword" placeholder="Search by username"
+           th:value="${keyword}" style="padding: 10px; border-radius: 10px; width: 250px; border: none;">
+    <button type="submit" style="padding: 10px 20px; border-radius: 10px; background: #4CAF50; color: white; border: none;">Search</button>
+</form>
+
 
 <table>
     <thead>
@@ -73,15 +79,18 @@
         <td th:text="${userBalances[user.id]}">0.0</td>
         <td th:text="${user.enabled ? 'Active' : 'Blocked'}">Status</td>
         <td>
-            <form th:action="@{'/admin/block-user/' + ${user.id}}" method="post" style="display:inline;">
-                <button type="submit" th:if="${user.enabled}">Block</button>
-            </form>
-            <form th:action="@{'/admin/unblock-user/' + ${user.id}}" method="post" style="display:inline;">
-                <button type="submit" th:if="${!user.enabled}">Unblock</button>
-            </form>
-            <form th:action="@{'/admin/delete-user/' + ${user.id}}" method="post" style="display:inline;">
-                <button type="submit" style="background-color: red;">Delete</button>
-            </form>
+            <!-- Только для ADMIN: Block / Unblock / Delete -->
+            <div sec:authorize="hasRole('ADMIN')">
+                <form th:action="@{'/admin/block-user/' + ${user.id}}" method="post" style="display:inline;">
+                    <button type="submit" th:if="${user.enabled}">Block</button>
+                </form>
+                <form th:action="@{'/admin/unblock-user/' + ${user.id}}" method="post" style="display:inline;">
+                    <button type="submit" th:if="${!user.enabled}">Unblock</button>
+                </form>
+                <form th:action="@{'/admin/delete-user/' + ${user.id}}" method="post" style="display:inline;">
+                    <button type="submit" style="background-color: red;">Delete</button>
+                </form>
+            </div>
         </td>
     </tr>
     </tbody>
