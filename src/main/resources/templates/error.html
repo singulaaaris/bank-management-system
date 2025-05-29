@@ -26,8 +26,8 @@
         }
 
         h2 {
-            font-size: 2em;
-            margin-bottom: 30px;
+            font-size: 2.2em;
+            margin-bottom: 20px;
         }
 
         .error-message {
@@ -35,6 +35,11 @@
             padding: 20px;
             border-radius: 10px;
             margin-top: 20px;
+            text-align: left;
+        }
+
+        .error-message p {
+            margin: 10px 0;
         }
 
         a {
@@ -61,9 +66,12 @@
 </head>
 <body>
 <div class="error-container">
-    <h2>Error Occurred!</h2>
-    <div class="error-message" th:if="${errorMessage != null}">
-        <p th:text="${errorMessage}"></p>
+    <h2>An Error Occurred</h2>
+    <div class="error-message">
+        <p><strong>Status:</strong> <span th:text="${status}"></span></p>
+        <p><strong>Error:</strong> <span th:text="${error}"></span></p>
+        <p><strong>Message:</strong> <span th:text="${message}"></span></p>
+        <p><strong>Path:</strong> <span th:text="${path}"></span></p>
     </div>
     <a href="/home">Back to Dashboard</a>
 </div>

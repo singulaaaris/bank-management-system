@@ -106,6 +106,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 
     public void deleteAllUsers() {
         userRepository.deleteAll();

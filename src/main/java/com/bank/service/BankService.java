@@ -38,10 +38,12 @@ public class BankService {
         if (amount < 100) {
             throw new IllegalArgumentException("Minimum deposit amount is 100 KZT.");
         }
+
         validateAmount(amount);
         Account account = getAccountByNumber(accountNumber);
         account.setBalance(account.getBalance() + amount);
         accountRepo.save(account);
+
         logTransaction(account, amount, "Deposit", null);
     }
 
@@ -49,11 +51,14 @@ public class BankService {
     public void withdrawByAccountNumber(String accountNumber, double amount) {
         validateAmount(amount);
         Account account = getAccountByNumber(accountNumber);
+
         if (account.getBalance() < amount) {
             throw new RuntimeException("Insufficient funds!");
         }
+
         account.setBalance(account.getBalance() - amount);
         accountRepo.save(account);
+
         logTransaction(account, amount, "Withdrawal", null);
     }
 
@@ -99,14 +104,12 @@ public class BankService {
 
     private void validateAmount(double amount) {
         if (amount < 100) {
-            throw new IllegalArgumentException("Minimum amount is 100 KZT");
+            throw new IllegalArgumentException("Minimum amount is 100 KZT.");
         }
     }
-
 
     public List<Transaction> getTransactionsByAccountNumber(String accountNumber) {
         Account account = getAccountByNumber(accountNumber);
         return transactionRepository.findByAccountIdOrderByTimestampDesc(account.getId());
-
     }
 }
