@@ -38,15 +38,15 @@
 ---
 
 ### 💸 transaction
-| Column         | Type     | Description                      |
-|----------------|----------|----------------------------------|
-| id             | BIGINT   | Primary key                      |
-| transactionType| VARCHAR  | Deposit, Withdrawal, Transfer    |
-| amount         | DOUBLE   | Transaction amount               |
-| timestamp      | DATETIME | Date and time of transaction     |
-| comment        | TEXT     | Optional comment (for transfers) |
-| account_id     | BIGINT   | FK → account(id)                 |
-
+| Column          | Type     | Description                      |
+|-----------------|----------|----------------------------------|
+| id              | BIGINT   | Primary key                      |
+| transaction_type| VARCHAR  | Deposit, Withdrawal, Transfer    |
+| amount          | DOUBLE   | Transaction amount               |
+| timestamp       | DATETIME | Date and time of transaction     |
+| comment         | TEXT     | Comment (for transfers)          |
+| account_id      | BIGINT   | FK → account(id)                 |
+| card_number     | VARCHAR  | Used card number for transaction |
 ---
 
 ## 🔗 Foreign Keys
